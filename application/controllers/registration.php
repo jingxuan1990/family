@@ -1,6 +1,6 @@
 <?php
 /**
- * used to help user register
+ * used is used to register
  * @author andy
  *
  */
@@ -15,9 +15,8 @@ class Registration extends CI_Controller
     }
     
     /**
-     * show the registration page for user
+     * show the registration page for a user
      * @access public 
-     * @return NULL
      * 
      */
     public function index()
@@ -30,7 +29,7 @@ class Registration extends CI_Controller
     }
     
     /**
-     * method used to add a new user
+     * method is used to add a new user
      */
     public  function  register()
     {

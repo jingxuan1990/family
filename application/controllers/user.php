@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * class is used to display user's information
+ * @author andy
+ *
+ */
 class User extends CI_Controller
 {
     public function __construct()
@@ -22,7 +27,7 @@ class User extends CI_Controller
     
     /**
      * get user's information
-     * @param string $username
+     * @param string $username -- user's name
      */
     public function  info($username)
     {
@@ -31,11 +36,11 @@ class User extends CI_Controller
         {
             redirect('login');
         }
-        render($this, 'Home', 'panels/personal.phtml', array("active"=>3));
+        render($this, 'Home', 'content/personal.phtml', array("active"=>3));
     }
     
     /**
-     * add a record for a user
+     * add a record of the current logined user
      */  
     public function add_record()
     {
@@ -52,13 +57,14 @@ class User extends CI_Controller
     }
     
     /**
-     * update user's password
+     * update the curent logined user's password
      */
     public function update_password()
     {
         $password     = $this->input->post('password', true);
         $old_password = $this->input->post('old_password', true);
         $username     = $this->session->userdata('username');
+        
         if ($this->user->updatePassword($username, $password, $old_password)){
             $this->writeJson(array('status'=>true, 'message'=>'密码修改成功！'));
         }else{
@@ -73,12 +79,13 @@ class User extends CI_Controller
     {
         $data['records'] = $this->record->get_all_records();
         $data['active']    = 1;
-        render($this, 'Home', 'panels/record.phtml', $data);
+        
+        render($this, 'Home', 'content/record.phtml', $data);
     }
     
     /**
      *  count++ or count--
-     * @param number $flag
+     * @param number $flag -- add or sub
      */
     public function  add_or_sub_count($flag = 1)
     {
@@ -90,7 +97,7 @@ class User extends CI_Controller
     }
     
     /**
-     * get user's count
+     * get user's total count
      * @return integer $count -- user's count
      */
     public function  get_user_count()
@@ -99,7 +106,7 @@ class User extends CI_Controller
     }
     
     /**
-     * delete a record for the current logined user
+     * delete a record from the current logined user
      * @param integer $record_id -- the deleted record's id
      */
     public function delete_record($record_id)
@@ -113,6 +120,9 @@ class User extends CI_Controller
        }
     }
     
+    /**
+     * method is used to display the result for all the user
+     */
     public function  result()
     {
         $data['user_result']  = $this->record->get_all_user_total();
@@ -134,6 +144,6 @@ class User extends CI_Controller
         }
         
         $data['active']    = 2;
-        render($this, 'Home', 'panels/result.phtml', $data);
+        render($this, 'Home', 'content/result.phtml', $data);
     }
 }

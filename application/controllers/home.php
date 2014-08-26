@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * class is used to display Home page
+ * @author andy
+ *
+ */
 class Home extends  CI_Controller
 {
     
@@ -15,7 +19,7 @@ class Home extends  CI_Controller
     {
         $data['records']   = $this->record->get_all_records();
         $data['active']    = 1;
-        render($this, 'Home', 'panels/record.phtml', $data);
+        render($this, 'Home', 'content/record.phtml', $data);
     }
     
 }

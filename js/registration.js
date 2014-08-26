@@ -1,93 +1,70 @@
 (function($){
 	$(function(){
+		
 		$("form button").click(function(e){
+			e.preventDefault();
+			if(vaild_Registration_From){
+				registration();
+			}
+		});
+		
+		function registration(){
 			var username = $("form input[type='text']").val();
-			var password1 = $("#password1").val();
-			var password2 = $("#password2").val();
-			if(isNotVaild(username) || isNotVaild(password1) || isNotVaild(password2)){
+			var password = $("#password1").val();
+			
+			if(!vaild_Registration_From()){
 				return;
 			}
 			
-			if(password1 != password2){
-				return;
-			}
-			// using ajax request for login in
 			$.ajax({
-				  type: "POST",
-				  url: 'index.php/registration/register',
-				  data: {'username':username, 'password':password1},
+				  type: 'POST',
+				  url:  'registration/register',
+				  data: {'username':username, 'password':password},
 				  success: function(result){
 					  if(result.status){
-						  window.location.href = 'index.php/login';
+						  notify = $.notify("Success", result.message, "success");
+						  setTimeout(function(){
+							  $(notify).hide();
+							  window.location.href = 'login';
+						  }, 2000);
 					  }else{
-						  loginErrorMessage(result.message);
+						  $.notify("Error", result.message, "error");
 					  }
 						  
 				  },
 				  error:function(result){
-					  loginErrorMessage("用户注册时发生错误！");
+					  $.notify("Error", "注册时发生错误！", "error");
 				  },
 				  dataType: 'json'
-				});
-		});
+		      });
+		}
 		
-		$("form input[type='text']").blur(function(e){
-			if(isNotVaild($(this).val())){
-				$(this).parent().removeClass('has-success');
-				$(this).parent().addClass('has-error');
-			    $(this).next().text("用户名不合法，请重新输入！");
-			}else{
-				$(this).parent().removeClass('has-error');
-				$(this).parent().addClass('has-success');
-				$(this).next().text("");
-			}
-		});
-		
-		$("form input[type='password']").blur(function(e){
+		function vaild_Registration_From(){
+			var  username  = $("form input[type='text']").val(),
+			     password1 = $("#password1").val(),
+			     password2 = $("#password2").val();
 			
-			if(isNotVaild($(this).val())){
-				$(this).parent().removeClass('has-success');
-				$(this).parent().addClass('has-error');
-				$(this).next().text("密码不合法，请重新输入！");
-				return;
-			}else{
-				$(this).parent().removeClass('has-error');
-				$(this).parent().addClass('has-success');
-				$(this).next().text("");
+			     if($.isNotVaild(username)){
+			    	 $.notify("Error", "用户名长度（5-16）不合法！", "error");
+			    	 return false;
+			     }else if($.isNotVaild(password1) || $.isNotVaild(password2)){
+			    	 $.notify("Error", "密码长度（5-16）不合法！", "error");
+			    	 return false;
+			     }else if(password1 != password2){
+			    	 $.notify("Error", "两次密码输入不一致！", "error");
+			    	 return false;
+			     }
+			return true;
+		}
+		
+		$("body").on("keyup", function(event){
+			if(event.keyCode === 13){
+				if(vaild_Registration_From()){
+					registration();
+				}
 			}
-			var pw_obj  = $("#password1");
-			var pw2_obj = $("#password2");
-			var password1 = pw_obj.val();
-			var password2 = pw2_obj.val();
-			if(password1 != password2){
-				pw_obj.parent().removeClass('has-success');
-				pw2_obj.parent().removeClass('has-success');
-				pw_obj.parent().addClass('has-error');
-				pw2_obj.parent().addClass('has-error');
-				$(this).next().text("两次密码输入不匹配！");
-			}else{
-				pw_obj.parent().removeClass('has-error');
-				pw2_obj.parent().removeClass('has-error');
-				pw_obj.parent().addClass('has-success');
-				pw2_obj.parent().addClass('has-success');
-				pw_obj.next().text("");
-				pw2_obj.next().text("");
-			}
+				
 		});
 		
-		function isNotVaild(string){
-			var len = string.trim().length;
-			if(len <= 4 ||  len >=16){
-				return true;
-			}
-		}
-		
-		function loginErrorMessage(message){
-			var html = $.parseHTML("<div class='alert alert-danger' role='alert'>" + message +"</div>");
-		    $("#alertTemplate").append(html);
-			setTimeout(function(){
-				$("#alertTemplate").html("");
-			}, 2000);
-		}
 	});
 }(jQuery));

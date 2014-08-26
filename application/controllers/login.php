@@ -1,6 +1,6 @@
 <?php
 /**
- * @todo class used to login in
+ * class is used to login in
  * @author andy
  *
  */

@@ -10,61 +10,25 @@
 		});
 		
 		$("button.btn.btn-primary.update_password").click(function(e){
+			e.preventDefault();
+			
 			old_password = $.trim($("#oldPassword").val());
-			span_obj = $(this).next();
 			if($.trim(old_password) == ''){
-				$("#oldPassword").removeClass('has-success');
-				$("#oldPassword").addClass('has-error');
-				span_obj.text("旧密码不能为空！");
-				span_obj.css('color', '#a94442');
+				$.notify("Error", "旧密码不能为空！", "error");
 				return;
-			}else{
-				$("#oldPassword").removeClass('has-error');
-				$("#oldPassword").addClass('has-success');
-				span_obj.text("");
 			}
 			
 			password1 = $.trim($("#password1").val());
 			password2 = $.trim($("#password2").val());
 			// valiate the form 
-			if(isNotVaild(password1)){
-				$("#password1").parent().removeClass("has-success");
-				$("#password1").parent().addClass("has-error");
-				span_obj.text("密码长度必须在4-16字符之间！");
-				span_obj.css('color', '#a94442');
+			if($.isNotVaild(password1) || $.isNotVaild(password2)){
+				$.notify("Error", "新密码长度必须在5-16个字符之间！", "error");
 				return;
-			}else{
-				$("#password1").parent().removeClass("has-error");
-				$("#password1").parent().addClass("has-success");
-				span_obj.text("");
 			}
 			
-			if(isNotVaild(password2)){
-				$("#password2").parent().removeClass("has-success");
-				$("#password2").parent().addClass("has-error");
-				span_obj.text("密码长度必须在4-16字符之间！");
-				span_obj.css('color', '#a94442');
-				return;
-			}else{
-				$("#password2").parent().removeClass("has-error");
-				$("#password2").parent().addClass("has-success");
-				span_obj.text("");
-			}
-				
 			if(password1 != password2){
-				$("#password1").removeClass('has-success');
-				$("#password2").removeClass('has-success');
-				$("#password1").addClass('has-error');
-				$("#password2").addClass('has-error');
-				span_obj.text("两次密码输入不一致！");
-				span_obj.css('color', '#a94442');
+				$.notify("Error", "两次密码输入不一致！", "error");
 				return;
-			}else{
-				$("#password1").removeClass('has-error');
-				$("#password2").removeClass('has-error');
-				$("#password1").addClass('has-success');
-				$("#password2").addClass('has-success');
-				span_obj.text("");
 			}
 			
 			$.ajax({
@@ -72,75 +36,55 @@
 				url : 'user/update_password',
 				data: {'password': password2, 'old_password':old_password},
 				success: function(result){
-				    span_obj.text(result.message);
-				 if(result.status){
-					span_obj.css('color', '#3c763d');		        
-				 }else{
-				    span_obj.css('color', '#a94442');
-				 }
+					 if(result.status){
+						 $.notify("Success", result.message, "success");
+					 }else{
+						 $.notify("Error", result.message, "error");
+					 }
 				},
-				error:function(result){
-					span_obj.text("修改密码时发生错误，请稍候重试！");
-					span_obj.css('color', '#a94442');
+				error:function(){
+					 $.notify("Error", "修改密码时发生错误！", "error");
 				},
 				dataType: 'json'
 			});
 		});
 		
 		$("button.btn.btn-primary.btn-block").click(function(){
-			var money_obj = $("#money");;
-			var span_obj  = money_obj.next();
-			if(!$.isNumeric(money_obj.val())){
-				money_obj.parent().removeClass('has-success');
-				money_obj.parent().addClass('has-error');
-				span_obj.text("金额必须非空且是数字！");
+			var money = $("#money").val(),
+			    desc = $("textarea.form-control").val();
+			
+			if(!$.isNumeric(money)){
+				$.notify("Error", "金额必须非空且是数字！", "error");
 				return;
-			}else{
-				money_obj.parent().removeClass('has-error');
-				money_obj.parent().addClass('has-success');
-				span_obj.text("");
 			}
 			
-			var desc_obj = $("textarea.form-control");
-			var desc_span_obj = desc_obj.next();
-			if(desc_obj.val().trim().length > 100){
-				desc_obj.parent().removeClass('has-success');
-				desc_obj.parent().addClass('has-error');
-				desc_span_obj.text("描述信息限制长度为100个字符！");
+			if(desc.trim().length < 10){
+				$.notify("Error", "描述信息长度至少为10个字符！", "error");
 				return;
-			}else{
-				desc_obj.parent().removeClass('has-error');
-				desc_obj.parent().addClass('has-success');
-				desc_span_obj.text("");
 			}
 			
-			var record_span = $(this).next();
+			if(desc.trim().length > 100){
+				$.notify("Error", "描述信息限制长度为100个字符！", "error");
+				return;
+			}
+			
 			$.ajax({
-				type: 'POST',
-				url : 'user/add_record',
-				data: {'money': money_obj.val(), 'desc':desc_obj.val()},
-				success: function(result){
-					record_span.text(result.message);
-				 if(result.status){
-					 record_span.css('color', '#3c763d');
-				 }else{
-					 record_span.css('color', '#a94442');
-				 }
-				},
-				error:function(result){
-					record_span.text("添加记录时发生错误，请重试！");
-					record_span.css('color', '#a94442');
-				},
-				dataType: 'json'
+				type	: 'POST',
+				url 	: 'user/add_record',
+				data	: {'money' :  money, 'desc' : desc},
+				success : function(result){
+							 if(result.status){
+								 $.notify("Success", result.message, "success");
+							 }else{
+								 $.notify("Error", result.message, "error");
+							 }
+						  },
+				error  :  function(result){
+							 $.notify("Error", "添加记录时发生错误!", "error");
+						  },
+			  dataType : 'json'
 			});
 		});
-		
-		function isNotVaild(string){
-			var len = string.trim().length;
-			if(len <= 4 ||  len >=16){
-				return true;
-			}
-		}
 		
 		$("a.btn.btn-primary").each(function(index){
 			var add = index === 0 ? 1 : 0;
