@@ -1,0 +1,39 @@
+
+<div class="panel panel-default">
+    <div class="panel-body">
+		<table class="table table-hover">
+             <thead>
+               <tr>
+                 <th>日期</th>
+                 <th>用户名</th>
+                 <th>动作</th>
+                 <th>金额</th>
+                 <th>描述</th>
+                 <th>删除</th>
+               </tr>
+             </thead>
+             <?php foreach ($records as $record):?>
+                <?php 
+                    $my_record  = $username === $record->username;
+                    $abbr_desc  = $record->des;
+                    if (count($abbr_desc) > 10) {
+                        $abbr_desc = substr($abbr_desc, 0, 10);
+                    }
+                ?>
+                <tr class="<?php echo $my_record ? 'success' : '';?>">
+                  <td><?php echo $record->log_time?></td>
+                  <td><?php echo $record->username;?></td>
+                  <td>增加了</td>
+                  <td><span class="money"><?php echo $record->money;?></span> 元</td>
+                  <td><abbr title="<?php echo $record->des;?>"><?php echo $abbr_desc;?></abbr></td>
+                  <td class="<?php echo $my_record ? 'delete':'';?>">
+                  <?php if ($my_record):?>
+                    <span class="glyphicon glyphicon-remove"></span>
+                  <?php endif;?>
+                  </td>
+                  <input type="hidden" name="record_id" value="<?php echo $record->record_id;?>">
+                </tr>
+            <?php endforeach;?>
+        </table>
+	</div>
+</div>

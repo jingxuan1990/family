@@ -1,0 +1,54 @@
+
+<div class="panel panel-default">
+    <div class="panel-body">
+		<table class="table table-bordered table-condensed">
+		     <caption><strong>用户增加总金额</strong></caption>
+             <thead>
+               <tr>
+                 <th>用户名</th>
+                 <th>总金额</th>
+               </tr>
+             </thead>
+             <?php foreach ($user_result as $result):?>
+              <tr>
+                <td><?php echo $result->username?></td>
+                <td><?php echo $result->total?> 元</td>
+              </tr>
+             <?php endforeach;?>
+              <tr class="danger">
+                <td>总金额</td>
+                <td><?php echo $total?></td>
+              </tr>
+        </table>
+        <table class="table table-bordered table-condensed">
+            <caption><strong>用户消费总金额</strong></caption>
+            <thead>
+              <tr>
+                <th>用户名</th>
+                <th>总金额</th>
+              </tr>
+            </thead>
+            <?php foreach ($pay_result as $pay):?>
+            <tr>
+               <td><?php echo $pay['username'];?></td>
+               <td><?php echo $pay['user_pay'];?>元</td>
+            </tr>
+            <?php endforeach;?>
+        </table>
+        <table class="table table-bordered table-condensed">
+            <caption><strong>总账单</strong></caption>
+            <thead>
+              <tr>
+                <th>用户名</th>
+                <th>总金额</th>
+              </tr>
+            </thead>
+            <?php foreach ($final_result as $final):?>
+              <tr>
+               <td><?php echo $final['username'];?></td>
+               <td><?php echo $final['result_total'];?> 元</td>
+              </tr>
+            <?php endforeach;?>
+        </table>
+	</div>
+</div>

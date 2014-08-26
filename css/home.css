@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+div.row.content{
+	margin-top:40px;
+}
+span.money{
+	color:red;
+}
