@@ -125,18 +125,19 @@ class User extends CI_Controller
      */
     public function  result()
     {
-        $data['user_result']  = $this->record->get_all_user_total();
-        $data['total']        = $this->record->get_total()->total;
-        $total_count          = $this->user->get_total_count()->total_count;
-        $users                = $this->user->get_all_user_count();
-        $data['pay_result']   = array();
+        $data['user_result']  = $this->record->get_all_user_total(); // user's result 
+        $data['total']        = $this->record->get_total()->total; // the total of money
+        $total_count          = $this->user->get_total_count()->total_count; // the number of eating
+        $users                = $this->user->get_all_user_count();  // get the variable count of all the user
+        $data['pay_result']   = array(); // the result of spend moeny 
         $data['final_result'] = array();
         if ($total_count) {
             foreach ($users as $user)
             {
-                $username = $user->username;
-                $user_pay = round(($user->count / $total_count) * $data['total'], 2);
-                $data['pay_result'][]   = array('username'=>$username, 'user_pay'=>$user_pay);
+                $username               = $user->username;
+                $user_count             = $user->count ? $user->count : 0;
+                $user_pay               = round(($user_count / $total_count) * $data['total'], 2);
+                $data['pay_result'][]   = array('username'=>$username, 'user_pay'=>$user_pay, 'user_count' => $user_count);
                 $user_total_money       = $this->record->get_user_total($user->id)->total;
                 $result_money           = $user_total_money - $user_pay;
                 $data['final_result'][] = array('username'=>$username, 'result_total' =>$result_money);

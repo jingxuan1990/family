@@ -30,17 +30,24 @@
             </thead>
             <?php foreach ($pay_result as $pay):?>
             <tr>
-               <td><?php echo $pay['username'];?></td>
-               <td><?php echo $pay['user_pay'];?>元</td>
+               <td>
+                 <div class="col-md-4">
+                    <?php echo $pay['username'];?>                   
+                 </div>
+                 <div class="col-md-2">
+                    <span class="badge"><?php echo $pay['user_count'];?></span>
+                 </div>  
+               </td>                
+               <td><?php echo $pay['user_pay'];?> 元</td>
             </tr>
             <?php endforeach;?>
         </table>
         <table class="table table-bordered table-condensed">
-            <caption><strong>总账单</strong></caption>
+            <caption><strong>总账单（增加-消费）</strong></caption>
             <thead>
               <tr>
                 <th>用户名</th>
-                <th>总金额</th>
+                <th>应所得金额</th>
               </tr>
             </thead>
             <?php foreach ($final_result as $final):?>
