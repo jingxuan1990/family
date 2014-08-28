@@ -129,7 +129,7 @@ class User extends CI_Controller
         $data['total']        = $this->record->get_total()->total; // the total of money
         $total_count          = $this->user->get_total_count()->total_count; // the number of eating
         $users                = $this->user->get_all_user_count();  // get the variable count of all the user
-        $data['pay_result']   = array(); // the result of spend moeny 
+        $data['spend_result'] = array(); // the result of spend moeny 
         $data['final_result'] = array();
         if ($total_count) {
             foreach ($users as $user)
@@ -139,8 +139,8 @@ class User extends CI_Controller
                 $user_progress          = $user_count / $total_count;
                 
                 $user_total_spend       = round($user_progress * $data['total'], 2);
-                $data['pay_result'][]   = array('username'      => $username, 
-                                                'user_pay'      => $user_total_spend,
+                $data['spend_result'][] = array('username'      => $username, 
+                                                'user_spend'    => $user_total_spend,
                                                 'user_count'    => $user_count, 
                                                 'user_progress' => round($user_progress * 100, 2)
                                           );

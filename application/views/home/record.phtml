@@ -16,22 +16,23 @@
                 <?php 
                     $my_record  = $username === $record->username;
                     $abbr_desc  = $record->des;
-                    if (count($abbr_desc) > 10) {
-                        $abbr_desc = substr($abbr_desc, 0, 10);
+                    if (strlen($abbr_desc) > 10) {
+                        $len = preg_match('/[\x7f-\xff]/', $abbr_desc) ? 30 : 10; // 含有中文截取7个字符，全是英文截取10个字符
+                        $abbr_desc = substr($abbr_desc, 0, $len);
                     }
                 ?>
-                <tr class="<?php echo $my_record ? 'success' : '';?>">
+                <tr>
                   <td><?php echo $record->log_time?></td>
-                  <td><?php echo $record->username;?></td>
+                  <td class="<?php echo $my_record ? 'color-red' : '';?>"><?php echo $record->username;?></td>
                   <td>增加了</td>
-                  <td><span class="money"><?php echo $record->money;?></span> 元</td>
+                  <td class="<?php echo $my_record ? 'color-red' : '';?>"><?php echo $record->money;?> 元</td>
                   <td><abbr title="<?php echo $record->des;?>"><?php echo $abbr_desc;?></abbr></td>
                   <td class="<?php echo $my_record ? 'delete':'';?>">
                   <?php if ($my_record):?>
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="glyphicon glyphicon-remove color-red"></span>
                   <?php endif;?>
                   </td>
-                  <input type="hidden" name="record_id" value="<?php echo $record->record_id;?>">
+                  <input type="hidden" name="record_id" value="<?php echo $record->record_id;?>" >
                 </tr>
             <?php endforeach;?>
         </table>

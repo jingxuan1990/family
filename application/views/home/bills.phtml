@@ -11,14 +11,14 @@
              </thead>
            <tbody>
              <?php foreach ($user_result as $result):?>
-              <tr>
+              <tr class="<?php echo $username == $result->username ? 'color-red' : '';?>">
                 <td><?php echo $result->username?></td>
                 <td><?php echo $result->total?> 元</td>
               </tr>
              <?php endforeach;?>
               <tr>
                 <th>总金额</th>
-                <th><span class="money"><?php echo $total?></span> 元（人民币）</th>
+                <th><span class="color-red"><?php echo $total?> 元</span>（人民币）</th>
               </tr>
            </tbody>
         </table>
@@ -31,25 +31,26 @@
               </tr>
             </thead>
             <tbody>
-            <?php foreach ($pay_result as $pay):?>
-            <tr>
+            <?php foreach ($spend_result as $spend):?>
+            <?php $bool =  $username == $spend['username'];?>
+            <tr class="<?php echo $username == $spend['username'] ? 'color-red' : '';?>">
                <td>
                  <div class="col-md-3">
-                    <?php echo $pay['username'];?>                   
+                   <?php echo $spend['username'];?>             
                  </div>
                  <div class="col-md-1">
-                    <span class="badge"><?php echo $pay['user_count'];?></span>
+                    <span class="badge <?php echo $username == $spend['username'] ? 'color-red' : '';?>"><?php echo $spend['user_count'];?></span>
                  </div>
                  <div class="col-md-4"  style="height:20px;">
                    <div class="progress">
-                       <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $pay['user_progress'];?>" 
-                                    aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $pay['user_progress'];?>%; min-width: 40px;">
-                         <?php echo $pay['user_progress'];?>%
+                       <div class="progress-bar <?php echo $bool ? 'progress-bar-danger' : '';?>" role="progressbar" aria-valuenow="<?php echo $spend['user_progress'];?>" 
+                                    aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $spend['user_progress'];?>%; min-width: 50px;">
+                         <?php echo $spend['user_progress'];?>%
                        </div>
                     </div>
                  </div>
                </td>                
-               <td><?php echo $pay['user_pay'];?> 元</td>
+               <td><?php echo $spend['user_spend'];?> 元</td>
             </tr>
             <?php endforeach;?>
             </tbody>
@@ -64,9 +65,9 @@
           </thead>
           <tbody>
             <?php foreach ($final_result as $final):?>
-              <tr>
-               <td><?php echo $final['username'];?></td>
-               <td><?php echo $final['result_total'];?> 元</td>
+              <tr class="<?php echo $username == $final['username'] ? 'color-red' : '';?>">
+               <td> <?php echo $final['username'];?> </td>
+               <td> <?php echo $final['result_total'];?> 元 </td>
               </tr>
             <?php endforeach;?>
           </tbody>
