@@ -136,11 +136,18 @@ class User extends CI_Controller
             {
                 $username               = $user->username;
                 $user_count             = $user->count ? $user->count : 0;
-                $user_pay               = round(($user_count / $total_count) * $data['total'], 2);
-                $data['pay_result'][]   = array('username'=>$username, 'user_pay'=>$user_pay, 'user_count' => $user_count);
+                $user_progress          = $user_count / $total_count;
+                
+                $user_total_spend       = round($user_progress * $data['total'], 2);
+                $data['pay_result'][]   = array('username'      => $username, 
+                                                'user_pay'      => $user_total_spend,
+                                                'user_count'    => $user_count, 
+                                                'user_progress' => round($user_progress * 100, 2)
+                                          );
+                
                 $user_total_money       = $this->record->get_user_total($user->id)->total;
-                $result_money           = $user_total_money - $user_pay;
-                $data['final_result'][] = array('username'=>$username, 'result_total' =>$result_money);
+                $result_total           = $user_total_money - $user_total_spend;
+                $data['final_result'][] = array('username'=>$username, 'result_total' =>$result_total);
             }
         }
         

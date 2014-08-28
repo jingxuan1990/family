@@ -1,9 +1,9 @@
 <div class="col-md-2">
   <div class="list-group">
-    <a href="user/get_all_records" class="list-group-item <?php echo $active === 1 ? 'active':''?>">记录信息<span class="badge"><?php echo $count ? $count : 0;?></span></a>
-    <a href="user/result" class="list-group-item <?php echo $active === 2 ? 'active':''?>">统计分析</a>
+    <a href="user/get_all_records" class="list-group-item <?php echo $active === 1 ? 'active':''?>">当月消费<span class="badge"><?php echo $count ? $count : 0;?></span></a>
+    <a href="user/result" class="list-group-item <?php echo $active === 2 ? 'active':''?>">当月统计</a>
     <a href="user/info/<?php echo $username;?>" class="list-group-item <?php echo $active === 3 ? 'active':''?>">
-      <?php echo $username;?>
+      <?php echo $username;?>（个人中心）
     </a>
     <a href="user/logout" class="list-group-item">注销登录</a>
   </div>
