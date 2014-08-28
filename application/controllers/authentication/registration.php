@@ -24,7 +24,7 @@ class Registration extends CI_Controller
        $data['title']    = 'registration';
        
        $this->load->view('templates/header.phtml', $data);
-       $this->load->view('registration.phtml');
+       $this->load->view('authentication/registration.phtml');
        $this->load->view('templates/footer.phtml');
     }
     

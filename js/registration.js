@@ -18,14 +18,14 @@
 			
 			$.ajax({
 				  type: 'POST',
-				  url:  'registration/register',
+				  url:  'authentication/registration/register',
 				  data: {'username':username, 'password':password},
 				  success: function(result){
 					  if(result.status){
 						  notify = $.notify("Success", result.message, "success");
 						  setTimeout(function(){
 							  $(notify).hide();
-							  window.location.href = 'login';
+							  window.location.href = 'authentication/login';
 						  }, 2000);
 					  }else{
 						  $.notify("Error", result.message, "error");

@@ -20,7 +20,7 @@ class Login extends CI_Controller
         $data['title']    = 'login';
         
         $this->load->view('templates/header.phtml', $data);
-        $this->load->view('login.phtml');
+        $this->load->view('authentication/login.phtml');
         $this->load->view('templates/footer.phtml');
     }
     

@@ -33,7 +33,7 @@
 			
 			$.ajax({
 				type: 'POST',
-				url : 'user/update_password',
+				url : 'home/user/update_password',
 				data: {'password': password2, 'old_password':old_password},
 				success: function(result){
 					 if(result.status){
@@ -70,7 +70,7 @@
 			
 			$.ajax({
 				type	: 'POST',
-				url 	: 'user/add_record',
+				url 	: 'home/user/add_record',
 				data	: {'money' :  money, 'desc' : desc},
 				success : function(result){
 							 if(result.status){
@@ -86,12 +86,12 @@
 			});
 		});
 		
-		$("a.btn.btn-primary").each(function(index){
+		$(".list-group-item .row button.btn.btn-primary").each(function(index){
 			var add = index === 0 ? 1 : 0;
 			$(this).click(function(){
 				$.ajax({
 					type: 'POST',
-					url : 'user/add_or_sub_count/' +　add,
+					url : 'home/user/add_or_sub_count/' +　add,
 					success: function(result){
 						$("span.badge").text(result.count);
 					},
@@ -107,7 +107,7 @@
 				var current_tr = $(this).parent();
 				$.ajax({
 					type: 'POST',
-					url : 'user/delete_record/' +　record_id,
+					url : 'home/user/delete_record/' +　record_id,
 					success: function(result){
 						if(result.status){
 							current_tr.remove();

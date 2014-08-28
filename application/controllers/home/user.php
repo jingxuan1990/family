@@ -22,7 +22,7 @@ class User extends CI_Controller
     {
 //     unset the application's session
        $this->session->sess_destroy();
-       redirect('/login');
+       redirect('authentication/login');
     }
     
     /**
@@ -36,7 +36,7 @@ class User extends CI_Controller
         {
             redirect('login');
         }
-        render($this, 'Home', 'content/personal.phtml', array("active"=>3));
+        render($this, 'Home', 'home/user_center.phtml', array("active"=>3));
     }
     
     /**
@@ -80,7 +80,7 @@ class User extends CI_Controller
         $data['records'] = $this->record->get_all_records();
         $data['active']    = 1;
         
-        render($this, 'Home', 'content/record.phtml', $data);
+        render($this, 'Home', 'home/record.phtml', $data);
     }
     
     /**
@@ -152,6 +152,6 @@ class User extends CI_Controller
         }
         
         $data['active']    = 2;
-        render($this, 'Home', 'content/result.phtml', $data);
+        render($this, 'Home', 'home/bills.phtml', $data);
     }
 }

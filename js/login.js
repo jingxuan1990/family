@@ -9,14 +9,14 @@
 			// using ajax request for login in
 			$.ajax({
 				  type: "POST",
-				  url: 'login/user_login',
+				  url: 'authentication/login/user_login',
 				  data: {'username':username, 'password':password},
 				  success: function(result){
 					  if(result.status){
 						  notify = $.notify("Success", result.message, "success");
 						  setTimeout(function(){
 							  $(notify).hide();
-							  window.location.href = 'home';
+							  window.location.href = 'index';
 						  }, 2000);
 					  }else{
 						  $.notify("Error", result.message, "error");

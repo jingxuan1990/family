@@ -4,7 +4,7 @@
  * @author andy
  *
  */
-class Home extends  CI_Controller
+class Index extends  CI_Controller
 {
     
     public function  __construct()
@@ -19,7 +19,7 @@ class Home extends  CI_Controller
     {
         $data['records']   = $this->record->get_all_records();
         $data['active']    = 1;
-        render($this, 'Home', 'content/record.phtml', $data);
+        render($this, 'Home', 'home/record.phtml', $data);
     }
     
 }

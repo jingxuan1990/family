@@ -19,6 +19,7 @@
 	                      }
 	                    });
 	                  },
+	                  
 	       isNotVaild: function(string){
 	      				  var len = string.trim().length;
 	      				  if(len <= 4 ||  len >=16){
