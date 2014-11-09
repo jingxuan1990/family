@@ -58,8 +58,8 @@
 				return;
 			}
 			
-			if(desc.trim().length < 10){
-				$.notify("Error", "描述信息长度至少为10个字符！", "error");
+			if(desc.trim().length < 5){
+				$.notify("Error", "描述信息长度至少为5个字符！", "error");
 				return;
 			}
 			
@@ -87,13 +87,16 @@
 		});
 		
 		$(".list-group-item .row button.btn.btn-primary").each(function(index){
-			var add = index === 0 ? 1 : 0;
+			var add = index === 0 ? 1 : 0,
+			    record_last_log_time = $('.last_record_log_datetime span');
+			
 			$(this).click(function(){
 				$.ajax({
 					type: 'POST',
 					url : 'home/user/add_or_sub_count/' +　add,
 					success: function(result){
 						$("span.badge").text(result.count);
+						record_last_log_time.text(result['log_time']);
 					},
 					dataType: 'json'
 				});

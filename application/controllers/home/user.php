@@ -92,9 +92,12 @@ class User extends CI_Controller
         $count = $this->get_user_count();
         if($flag || (!$flag && $count > 0)){
             $count = $this->user->add_or_sub_count($flag);
+            $user_id  = $this->getCurrentUserId();
+            $last_record_log_time = $this->user->updateRecordLogDate($user_id);
         }
-        $this->writeJson(array("status"=>true, "count"=>$count));
+        $this->writeJson(array("status"=>true, "count"=>$count, 'log_time' => $last_record_log_time));
     }
+    
     
     /**
      * get user's total count

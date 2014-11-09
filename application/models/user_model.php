@@ -1,6 +1,6 @@
 <?php
 /**
- * class is used to create user's model
+ * class used to create user's model
  * @author andy
  *
  */
@@ -96,6 +96,31 @@ class User_model extends CI_Model
            }
        }
        return false;
+   }
+   
+   public function  updateRecordLogDate($user_id)
+   {
+       $log_time = date('Y-m-d H:i:s');
+       $this->db->where('id', $user_id);
+       $succeed = $this->db->update('user', array('log_time' => $log_time));
+       if ($succeed) {
+           return date('Y年m月d日  H:i', strtotime($log_time)); // if update successfully, then return $log_time; or return false
+       }
+       
+       return false;
+   }
+   
+   public function  getRecordLogDate($user_id)
+   {
+       $query = $this->db->get_where('user', array('id' => $user_id));
+        
+       if ($query->num_rows() > 0) {
+           $row = $query->row();
+           return  $row->log_time;
+       }
+        
+       return false;
+        
    }
    
    /**

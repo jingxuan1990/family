@@ -49,7 +49,7 @@ body {
 }
 
 div.row.content {
-	margin-top: 40px;
+	margin-top: 10px;
 }
 
 .color-red{
@@ -61,4 +61,8 @@ table caption {
 	color: #428bca;
 	margin-top: 10px;
 	margin-bottom: 10px;
+}
+
+.last_record_log_datetime{
+	margin-bottom: 0px;
 }
