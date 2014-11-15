@@ -1,17 +1,16 @@
 <?php
 /**
- * used is used to register
- * @author andy
+ * class used to register
+ * @author Andy
  *
  */
 class Registration extends CI_Controller
 {
+//     protected  $model = 'user';
     
     public  function __construct()
     {
         parent::__construct();
-        $this->load->helper('url'); // load url helper class
-        $this->load->model('User_model', 'user'); // load user's model class
     }
     
     /**
@@ -33,16 +32,19 @@ class Registration extends CI_Controller
      */
     public  function  register()
     {
-      $username = $this->input->post('username', TRUE);
-      $password = $this->input->post('password', TRUE);
+        $json_data = array();
+        $username = getPostParameter('username');
+        $password = getPostParameter('password');
       
-      if ($this->user->insert($username, $password))
-      {
-          $this->writeJson(array('status'=>true, 'message' =>'用户注册成功！'));
-      }else{
-          $this->writeJson(array('status'=>false, 'message' =>'该用户名已经存在！'));
-      }
+        if (getModel('user')->insert($username, $password))
+        {
+            $json_data = array('status'=> true, 'message' =>'用户注册成功！');
+            redirect('/login');
+        }else{
+            $json_data = array('status'=> false, 'message' =>'该用户名已经存在！');
+        }
       
+        $this->writeJson($json_data);
     }
     
 }

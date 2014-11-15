@@ -6,17 +6,19 @@
  */
 class User_model extends CI_Model
 {
-    /**
-     * 
-     * @var string $username -- user's name
-     * @var string $password -- user's password
-     */
+   protected  $_model;
+   protected  $_table = 'user';
+   
    private $username;
    private $password;
+   private $identity;
+   private $log_time;
+   private $count;
    
    public  function __construct()
    {
        parent::__construct();
+       $this->_model = getModel('user');
    }
    
    /**
@@ -28,7 +30,7 @@ class User_model extends CI_Model
     */
    public function insert($username, $password){
       $data = $this->get_user_data($username, $password);
-      if (!$this->username_is_exist($username)) {
+      if (!$this->validUserName($username)) {
           return $this->db->insert('user', $data);
       }
        return false;
@@ -36,17 +38,16 @@ class User_model extends CI_Model
    
    /**
     * method used to login in 
-    * @param stirng $username
-    * @param string $password
+    * 
+    * @param MY_Model $model
     * @access public
     * @return boolean -- login in successfully or failure
     */
    public function login($username, $password){
        $data  = $this->get_user_data($username, $password);
-       $query = $this->db->get_where('user', $data);
-       $result = $query->row(); 
-       if ($result) {
-           return $result->id;
+       $query = $this->db->get_where($this->_table, $data, 1);
+       if ($query->num_rows()) {
+           return $query->row();
        }
        return  false;
    }
@@ -68,7 +69,7 @@ class User_model extends CI_Model
     * @access public
     * @return boolean
     */
-   public function  username_is_exist($username)
+   public function  validUserName($username)
    {
        $query = $this->db->get_where('user', array('username'=>$username));
        if ($query->num_rows() >0) {
@@ -104,7 +105,7 @@ class User_model extends CI_Model
        $this->db->where('id', $user_id);
        $succeed = $this->db->update('user', array('log_time' => $log_time));
        if ($succeed) {
-           return date('Y年m月d日  H:i', strtotime($log_time)); // if update successfully, then return $log_time; or return false
+           return unix_to_human(strtotime($log_time)); // if update successfully, then return the log_time
        }
        
        return false;

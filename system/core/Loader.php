@@ -1184,6 +1184,10 @@ class CI_Loader {
 		{
 			$this->model($autoload['model']);
 		}
+		
+		// Autoload models
+		$this->helper('model');
+		autoloadModels();
 	}
 
 	// --------------------------------------------------------------------

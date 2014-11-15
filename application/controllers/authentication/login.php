@@ -1,18 +1,16 @@
 <?php
 /**
- * class is used to login in
- * @author andy
+ * class used to login in
+ * @author Andy
  *
  */
 class Login extends CI_Controller
 {
+//     protected  $model = 'user';
+    
     public function __construct()
     {
         parent::__construct();
-        
-        // load useful classes
-        $this->load->model('User_model', 'user');
-        $this->load->helper('url');
     }
     
     public function  index()
@@ -26,21 +24,18 @@ class Login extends CI_Controller
     
     public function user_login()
     {
-        $username = $this->input->post('username', TRUE);
-        $password = $this->input->post('password', TRUE);
-        if (($user_id = $this->user->login($username, $password)))
+        $username = getPostParameter('username');
+        $password = getPostParameter('password');
+        $json_data= array();
+        $user = getModel('user')->login($username, $password);  
+        if ($user)
         {
-          /**
-           * ============================
-           * set session for logined user
-           * ============================
-           */
-           $this->session->set_userdata('username' , $username);
-           $this->session->set_userdata('user_id' , $user_id);
-           $this->writeJson(array('status'=>true, 'message'=>'用户登录成功!'));
+            setSessions(['username' => $username, 'user_id' => $user->id]);
+            $json_data = array('status'=>true, 'message'=>'用户登录成功!');
         }else{
-           $this->writeJson(array('status'=>false, 'message'=>'用户名或密码错误！'));
+            $json_data = array('status'=>false, 'message'=>'用户名或密码错误！');
         }
+        $this->writeJson($json_data);
     }
     
 }

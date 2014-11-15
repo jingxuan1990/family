@@ -7,12 +7,14 @@
  */
 class User extends CI_Controller
 {
+    private $_user;
+    private $_record;
+    
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper(array('url', 'view'));
-        $this->load->model('User_model', 'user');
-        $this->load->model('Record_model', 'record');
+        $this->_user   = getModel('user');;
+        $this->_record = getModel('record');
     }
     
     /**
@@ -20,9 +22,8 @@ class User extends CI_Controller
      */
     public function  logout()
     {
-//     unset the application's session
-       $this->session->sess_destroy();
-       redirect('authentication/login');
+       sessionDestroy();
+       redirect('/authentication/login');
     }
     
     /**
@@ -31,12 +32,12 @@ class User extends CI_Controller
      */
     public function  info($username)
     {
-        $session_username  = $this->session->userdata('username');
+        $session_username  = getSession('username');
         if ($username !== $session_username)
         {
-            redirect('login');
+            redirect('/login');
         }
-        render($this, 'Home', 'home/user_center.phtml', array("active"=>3));
+        renderHomeContent('home/user_center.phtml', ["active" => 3]);
     }
     
     /**
@@ -44,11 +45,12 @@ class User extends CI_Controller
      */  
     public function add_record()
     {
-        $money    = $this->input->post('money', true);
-        $desc     = $this->input->post('desc', true);
+        $money    = getPostParameter('money');
+        $desc     = getPostParameter('desc');
         $user_id  = $this->getCurrentUserId();
         $log_time = date('Y-m-d H:i:s');
-        $count = $this->record->add_record(array('user_id'=>$user_id, 'money'=>$money, 'desc'=>$desc, 'log_time'=>$log_time));
+        
+        $count = $this->_record->add_record(array('user_id'=>$user_id, 'money'=>$money, 'desc'=>$desc, 'log_time'=>$log_time));
         if($count){
             $this->writeJson(array('status'=>true, 'message'=>'添加记录成功！'));
         }else {
@@ -61,11 +63,11 @@ class User extends CI_Controller
      */
     public function update_password()
     {
-        $password     = $this->input->post('password', true);
-        $old_password = $this->input->post('old_password', true);
-        $username     = $this->session->userdata('username');
+        $password     = getPostParameter('password');
+        $old_password = getPostParameter('old_password');
+        $username     = getSession('username');
         
-        if ($this->user->updatePassword($username, $password, $old_password)){
+        if ($this->_user->updatePassword($username, $password, $old_password)){
             $this->writeJson(array('status'=>true, 'message'=>'密码修改成功！'));
         }else{
             $this->writeJson(array('status'=>false, 'message'=>'旧密码不正确！'));
@@ -77,10 +79,10 @@ class User extends CI_Controller
      */
     public function  get_all_records()
     {
-        $data['records'] = $this->record->get_all_records();
+        $data['records'] = $this->_record->get_all_records();
         $data['active']    = 1;
         
-        render($this, 'Home', 'home/record.phtml', $data);
+        renderHomeContent('home/record.phtml', $data);
     }
     
     /**
@@ -91,9 +93,9 @@ class User extends CI_Controller
     {
         $count = $this->get_user_count();
         if($flag || (!$flag && $count > 0)){
-            $count = $this->user->add_or_sub_count($flag);
+            $count = $this->_user->add_or_sub_count($flag);
             $user_id  = $this->getCurrentUserId();
-            $last_record_log_time = $this->user->updateRecordLogDate($user_id);
+            $last_record_log_time = $this->_user->updateRecordLogDate($user_id);
         }
         $this->writeJson(array("status"=>true, "count"=>$count, 'log_time' => $last_record_log_time));
     }
@@ -105,7 +107,7 @@ class User extends CI_Controller
      */
     public function  get_user_count()
     {
-        return $this->user->get_user_count();
+        return $this->_user->get_user_count();
     }
     
     /**
@@ -114,7 +116,7 @@ class User extends CI_Controller
      */
     public function delete_record($record_id)
     {
-       if ($this->record->delete_record($record_id))
+       if ($this->_record->delete_record($record_id))
        {
            $this->writeJson(array("status"=>true));
        }else 
@@ -128,10 +130,10 @@ class User extends CI_Controller
      */
     public function  result()
     {
-        $data['user_result']  = $this->record->get_all_user_total(); // user's result 
-        $data['total']        = $this->record->get_total()->total; // the total of money
-        $total_count          = $this->user->get_total_count()->total_count; // the number of eating
-        $users                = $this->user->get_all_user_count();  // get the variable count of all the user
+        $data['user_result']  = $this->_record->get_all_user_total(); // user's result 
+        $data['total']        = $this->_record->get_total()->total; // the total of money
+        $total_count          = $this->_user->get_total_count()->total_count; // the number of eating
+        $users                = $this->_user->get_all_user_count();  // get the variable count of all the user
         $data['spend_result'] = array(); // the result of spend moeny 
         $data['final_result'] = array();
         if ($total_count) {
@@ -148,13 +150,13 @@ class User extends CI_Controller
                                                 'user_progress' => round($user_progress * 100, 2)
                                           );
                 
-                $user_total_money       = $this->record->get_user_total($user->id)->total;
+                $user_total_money       = $this->_record->get_user_total($user->id)->total;
                 $result_total           = $user_total_money - $user_total_spend;
                 $data['final_result'][] = array('username'=>$username, 'result_total' =>$result_total);
             }
         }
         
         $data['active']    = 2;
-        render($this, 'Home', 'home/bills.phtml', $data);
+        renderHomeContent('home/bills.phtml', $data);
     }
 }
