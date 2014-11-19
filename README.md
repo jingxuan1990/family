@@ -1,5 +1,6 @@
 Famliy Payment Manager
 ======================
 
-Overview
-This application is using simply as faimly payment manager. 
+Gloal
+
+This application is using simply as famliy payment manager. 
