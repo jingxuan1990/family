@@ -1,4 +1,5 @@
-family
-======
+Famliy Payment Manager
+======================
 
-My Family Payment System
+Overview
+This application is using simply as faimly payment manager. 
