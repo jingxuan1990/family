@@ -50,19 +50,19 @@ $active_record = true;
 
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'root';
+$db['default']['password'] = '';
 $db['default']['database'] = 'family';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = true;
-$db['default']['db_debug'] = false;
+$db['default']['db_debug'] = true;
 $db['default']['cache_on'] = false;
 $db['default']['cachedir'] = '/tmp';
 $db['default']['char_set'] = 'utf8';
 $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = true;
-$db['default']['stricton'] = false;
+$db['default']['stricton'] = true;
 
 
 /* End of file database.php */
