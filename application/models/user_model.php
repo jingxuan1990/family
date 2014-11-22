@@ -1,24 +1,45 @@
 <?php
 /**
- * class used to create user's model
+ * class used to create record model
  * @author andy
  *
  */
 class User_model extends CI_Model
 {
-   protected  $_model;
-   protected  $_table = 'user';
-   
+   /**
+    * 
+    * @var string
+    */
    private $username;
+   
+   /**
+    * 
+    * @var string
+    */
    private $password;
+   
+   /**
+    * 
+    * @var integer
+    */
    private $identity;
+   
+   
+   /**
+    * 
+    * @var string
+    */
    private $log_time;
+   
+   /**
+    * 
+    * @var integer
+    */
    private $count;
    
    public  function __construct()
    {
        parent::__construct();
-       $this->_model = getModel('user');
    }
    
    /**
@@ -30,6 +51,7 @@ class User_model extends CI_Model
     */
    public function insert($username, $password){
       $data = $this->get_user_data($username, $password);
+      
       if (!$this->validUserName($username)) {
           return $this->db->insert('user', $data);
       }
@@ -45,10 +67,12 @@ class User_model extends CI_Model
     */
    public function login($username, $password){
        $data  = $this->get_user_data($username, $password);
-       $query = $this->db->get_where($this->_table, $data, 1);
+       $query = $this->db->get_where('user', $data);
+       
        if ($query->num_rows()) {
            return $query->row();
        }
+       
        return  false;
    }
    
@@ -64,7 +88,7 @@ class User_model extends CI_Model
    }
    
    /**
-    * whether to jude user's username is exist or not
+    * if username is exist or not
     * @param string $username
     * @access public
     * @return boolean
@@ -72,9 +96,11 @@ class User_model extends CI_Model
    public function  validUserName($username)
    {
        $query = $this->db->get_where('user', array('username'=>$username));
+       
        if ($query->num_rows() >0) {
            return true;
        }
+       
        return  false;
    }
    
@@ -87,15 +113,16 @@ class User_model extends CI_Model
    {
        // query the user's password is right or not
        $query = $this->db->get_where('user', array('username'=>$username, 'password'=>$this->encyptyPassword($old_password)), 1);
+       
        if ($query->result())// update user's password 
        { 
            $this->db->where('username', $username);
            $count = $this->db->update('user', array('password'=>$this->encyptyPassword($password)));
-           if($count > 0)
-           {
+           if($count > 0){
                return true;
            }
        }
+       
        return false;
    }
    
@@ -104,6 +131,7 @@ class User_model extends CI_Model
        $log_time = date('Y-m-d H:i:s');
        $this->db->where('id', $user_id);
        $succeed = $this->db->update('user', array('log_time' => $log_time));
+       
        if ($succeed) {
            return unix_to_human(strtotime($log_time)); // if update successfully, then return the log_time
        }
@@ -134,8 +162,9 @@ class User_model extends CI_Model
    private function  get_user_data($username, $password)
    {
        $user = array('username'=>$username,
-                     'password'=>$this->encyptyPassword($password)
+                     'password'=>$this->encyptyPassword($password),
                     );
+       
        return $user;
    }
    
@@ -159,6 +188,7 @@ class User_model extends CI_Model
        {
            $count = $query->row()->count;
        }
+       
        return $count;
    }
    
@@ -166,6 +196,7 @@ class User_model extends CI_Model
    {
        $this->db->select("sum(count) total_count");
        $this->db->from("user");
+       
        return $this->db->get()->row();
    }
    
@@ -174,6 +205,7 @@ class User_model extends CI_Model
        $this->db->select("id, username, sum(count) as count");
        $this->db->from("user");
        $this->db->group_by("id");
+       
        return $this->db->get()->result();
    }
 }

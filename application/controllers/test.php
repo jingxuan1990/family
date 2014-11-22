@@ -16,6 +16,8 @@ class Test extends  CI_Controller
     
     public function  index()
     {
+//         var_dump('hello world');
+//         var_dump($this);
     }
     
 }

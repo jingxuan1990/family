@@ -26,7 +26,7 @@ class Registration extends CI_Controller
        $this->load->view('authentication/registration.phtml');
        $this->load->view('templates/footer.phtml');
     }
-    
+   
     /**
      * method is used to add a new user
      */
@@ -36,15 +36,14 @@ class Registration extends CI_Controller
         $username = getPostParameter('username');
         $password = getPostParameter('password');
       
-        if (getModel('user')->insert($username, $password))
-        {
+        if (getModel('user')->insert($username, $password)){
             $json_data = array('status'=> true, 'message' =>'用户注册成功！');
-            redirect('/login');
-        }else{
+        } else {
             $json_data = array('status'=> false, 'message' =>'该用户名已经存在！');
         }
       
         $this->writeJson($json_data);
+        
     }
     
 }

@@ -38,7 +38,7 @@
 |
 */
 // class method params
-$route['default_controller'] =  'index';
+$route['default_controller'] =  'homex';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

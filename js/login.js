@@ -16,7 +16,7 @@
 						  notify = $.notify("Success", result.message, "success");
 						  setTimeout(function(){
 							  $(notify).hide();
-							  window.location.href = 'index';
+							  window.location.href = 'homex';
 						  }, 2000);
 					  }else{
 						  $.notify("Error", result.message, "error");

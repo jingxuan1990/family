@@ -37,7 +37,11 @@
 				data: {'password': password2, 'old_password':old_password},
 				success: function(result){
 					 if(result.status){
-						 $.notify("Success", result.message, "success");
+						 notify = $.notify("Success", result.message, "success");
+						 setTimeout(function(){
+							  $(notify).hide();
+							  window.location.href = 'home/user/logout';
+						  }, 1000)
 					 }else{
 						 $.notify("Error", result.message, "error");
 					 }

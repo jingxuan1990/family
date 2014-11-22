@@ -79,7 +79,7 @@ function  _getFileNames($soure_dir)
  */
 function getModel($model_name)
 {
-    $ci = &get_instance();
+    $ci = & get_instance();
     if (isset($ci->$model_name)) {
         return $ci->$model_name;
     }
