@@ -44,3 +44,4 @@ $RECYCLE.BIN/
 *.msp
 /.project
 /.settings/*
+/.buildpath
