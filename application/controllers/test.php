@@ -12,12 +12,15 @@ class Test extends  CI_Controller
         parent::__construct();
         
 //         $this->output->enable_profiler(true);
+        $this->load->helper('string');
     }
     
     public function  index()
     {
-//         var_dump('hello world');
-//         var_dump($this);
+        
+//         $enconding = ini_get('mbstring.encoding.parameter');
+//         var_dump($enconding);
+        echo substring('两次买米。。。。一次买鸡蛋。。。。', 1);
     }
     
 }

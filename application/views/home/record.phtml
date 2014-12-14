@@ -17,8 +17,8 @@
                     $my_record  = $username === $record->username;
                     $abbr_desc  = $record->des;
                     if (strlen($abbr_desc) > 10) {
-                        $len = preg_match('/[\x7f-\xff]/', $abbr_desc) ? 30 : 10; // 含有中文截取7个字符，全是英文截取10个字符
-                        $abbr_desc = substr($abbr_desc, 0, $len);
+                        $len = preg_match('/[\x7f-\xff]/', $abbr_desc) ? 5 : 10; // 含有中文截取7个字符，全是英文截取10个字符
+                        $abbr_desc = substring($abbr_desc, $len);
                     }
                 ?>
                 <tr>

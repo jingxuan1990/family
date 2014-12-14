@@ -13,6 +13,11 @@ class User extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        
+        // load helpers 
+        $this->load->helper('string');
+        
+        // load models
         $this->_user   = getModel('user');;
         $this->_record = getModel('record');
     }
